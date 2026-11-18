@@ -1,0 +1,33 @@
+# Local package: libfprint with SDCP support for Egis match-on-chip sensors
+# (Galaxy Book3 Ultra, 1c7a:05a1). Replaces Arch's libfprint.
+# Source: TenSeventy7/libfprint-egismoc-sdcp, pinned to the reviewed commit.
+# Undo:  sudo pacman -S libfprint
+pkgname=libfprint-egismoc-sdcp
+pkgver=1.94.9.r4d128d4
+pkgrel=1
+pkgdesc="libfprint with SDCP support for Egis match-on-chip sensors (TenSeventy7 fork)"
+arch=(x86_64)
+url="https://github.com/TenSeventy7/libfprint-egismoc-sdcp"
+license=(LGPL-2.1-or-later)
+depends=(glib2 glibc libgcc libgudev libgusb openssl pixman)
+makedepends=(git meson ninja glib2-devel)
+provides=("libfprint=1.94.9" libfprint-2.so)
+conflicts=(libfprint)
+_commit=4d128d4f6f0b46182572126e84df88a73ac27859
+source=("libfprint::git+https://github.com/TenSeventy7/libfprint-egismoc-sdcp.git#commit=$_commit")
+sha256sums=('SKIP')
+
+build() {
+  arch-meson libfprint build \
+    -D doc=false \
+    -D gtk-examples=false \
+    -D installed-tests=false \
+    -D introspection=false \
+    -D udev_rules_dir=/usr/lib/udev/rules.d \
+    -D udev_hwdb_dir=/usr/lib/udev/hwdb.d
+  meson compile -C build
+}
+
+package() {
+  meson install -C build --destdir "$pkgdir"
+}
