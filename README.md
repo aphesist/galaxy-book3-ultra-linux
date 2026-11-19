@@ -74,6 +74,11 @@ Brighter or darker: edit `dgain` in `/etc/modprobe.d/ov02c10.conf` (1024 = 1×)
 and reboot. Don't probe the camera with `cam` while an app is streaming: libcamera
 resets the flips when it initialises the sensor.
 
+Want a cleaner picture? The setup above uses libcamera's software ISP, which
+is grainy and flat. [galaxy-book3-ultra-ipu6-camera](https://github.com/aphesist/galaxy-book3-ultra-ipu6-camera)
+runs the webcam through Intel's own IPU6 pipeline (AIQ, like Windows) on top
+of this driver: real contrast, much less grain, full frame rate.
+
 ## Fingerprint: Egis match-on-chip with SDCP
 
 The reader is an **Egis `1c7a:05a1`** (firmware 9050.1.2.33). It needs
@@ -106,6 +111,7 @@ Undo: `sudo pacman -S libfprint`.
 
 ## See also
 
+- [galaxy-book3-ultra-ipu6-camera](https://github.com/aphesist/galaxy-book3-ultra-ipu6-camera): the webcam through Intel's IPU6 AIQ pipeline
 - [panacea-config](https://github.com/aphesist/panacea-config): the desktop on top
 - [arch-setup](https://github.com/aphesist/arch-setup): silent boot, autologin into a locked Hyprland, apps and dev tools
 
